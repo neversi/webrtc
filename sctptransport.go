@@ -302,6 +302,12 @@ func (r *SCTPTransport) onDataChannel(dc *DataChannel) (done chan struct{}) {
 	return
 }
 
+func (r *SCTPTransport) SetMessageSize(size float64) {
+	var canSendSize float64 = 0
+	var remoteMaxMessageSize float64 = size
+	r.maxMessageSize = r.calcMessageSize(remoteMaxMessageSize, canSendSize)
+}
+
 func (r *SCTPTransport) updateMessageSize() {
 	r.lock.Lock()
 	defer r.lock.Unlock()

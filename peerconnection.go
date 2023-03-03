@@ -1178,6 +1178,10 @@ func (pc *PeerConnection) SetRemoteDescription(desc SessionDescription) error { 
 		iceRole = ICERoleControlling
 	}
 
+	if maxMessageSize, ok := messageMaxSizeSet(desc.parsed); ok {
+		pc.sctpTransport.SetMessageSize(float64(maxMessageSize))
+	}
+
 	// Start the networking in a new routine since it will block until
 	// the connection is actually established.
 	if weOffer {

@@ -833,3 +833,18 @@ func isExtMapAllowMixedSet(desc *sdp.SessionDescription) bool {
 
 	return false
 }
+
+func messageMaxSizeSet(desc *sdp.SessionDescription) (float64, bool) {
+	for _, a := range desc.Attributes {
+		// TODO move attribute key to sdp module
+		if strings.TrimSpace(a.Key) == "max-message-size" {
+			size, err := strconv.ParseFloat(a.Value, 64)
+			if err != nil {
+				return 0, false
+			}
+			return size, true
+		}
+	}
+
+	return 0, false
+}
